@@ -1,15 +1,18 @@
-// Importar as funções que você precisa dos SDKs
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// Sua configuração do Firebase
+// Verifica se a variável de ambiente está definida
+if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+  throw new Error("A variável de ambiente NEXT_PUBLIC_FIREBASE_API_KEY não está definida.");
+}
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAcN5leh454y4dDRab9HR9E8CHw0N9zdFE",
-  authDomain: "chamadaqrcode.firebaseapp.com",
-  projectId: "chamadaqrcode",
-  storageBucket: "chamadaqrcode.appspot.com",
-  messagingSenderId: "902166658149",
-  appId: "1:902166658149:web:8c9f66ecf485deb18f1a8c"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 // Inicializar o Firebase

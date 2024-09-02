@@ -4,23 +4,41 @@ const CadastroPresenca: React.FC = () => {
   const [name, setName] = useState('');
   const [matricula, setMatricula] = useState(''); 
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Faz uma requisição HTTP para o endpoint '/api/adicionar-chamada'
-    const response = await fetch('/api/adicionar-chamada', {
-      method: 'POST',   // Define o método da requisição como POST, que é usado para enviar dados ao servidor
-      
-      headers: { // Define os cabeçalhos da requisição
-        'Content-Type': 'application/json', // Indica que o corpo da requisição está no formato JSON
-      },
-      
-      body: JSON.stringify({ name, matricula }), // Converte o corpo da requisição em uma string JSON
-    });
+    // Verifica se os campos estão preenchidos
+    if (!name.trim() || !matricula.trim()) {
+      setMessage('Por favor, preencha todos os campos.');
+      return;
+    }
 
-    const data = await response.json();
-    setMessage(data.message);
+    setLoading(true); // Inicia o estado de carregamento
+    setMessage(''); // Limpa a mensagem anterior
+
+    try {
+      // Faz uma requisição HTTP para o endpoint '/api/adicionar-chamada'
+      const response = await fetch('/api/adicionar-chamada', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, matricula }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao enviar dados. Por favor, tente novamente.');
+      }
+
+      const data = await response.json();
+      setMessage(data.message);
+    } catch (error: any) {
+      setMessage(error.message || 'Erro desconhecido.');
+    } finally {
+      setLoading(false); // Finaliza o estado de carregamento
+    }
   };
 
   return (
@@ -56,8 +74,12 @@ const CadastroPresenca: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded-md">
-            Enviar
+          <button 
+            type="submit" 
+            className={`w-full py-2 px-4 rounded-md ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white'}`} 
+            disabled={loading} // Desabilita o botão enquanto está carregando
+          >
+            {loading ? 'Enviando...' : 'Enviar'}
           </button>
         </form>
         {message && <p className="mt-4 text-center">{message}</p>}
