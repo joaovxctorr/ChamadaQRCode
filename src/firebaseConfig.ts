@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 // Verifica se a variável de ambiente está definida
@@ -12,11 +12,11 @@ const firebaseConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Inicializar o Firebase
-const app = initializeApp(firebaseConfig);
+// Verifica se o Firebase já foi inicializado
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp(); // Inicializa o Firebase se ainda não foi
 const db = getFirestore(app);
 
 export { db };
