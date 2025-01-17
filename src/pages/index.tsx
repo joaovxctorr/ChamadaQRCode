@@ -3,7 +3,7 @@ import QRCodeComponent from '../components/QRCodeComponent';
 
 const QRCodePage: React.FC = () => {
   const router = useRouter();
-  const qrData = 'https://example.com/cadastro'; // URL que leva para a página de cadastro
+  const qrData = 'https://chamada-qr-code.vercel.app/cadastro'; 
 
   const handleScan = () => {
     router.push('/cadastro');

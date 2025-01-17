@@ -2,22 +2,21 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs, Timestamp, DocumentData, query, where } from 'firebase/firestore';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; // CSS do calendário
+import 'react-calendar/dist/Calendar.css'; 
 import { ptBR } from 'date-fns/locale'; // Importa o locale pt-BR do date-fns
 
-type ValuePiece = Date | null; // Representa uma única data ou a ausência de uma data.
+type ValuePiece = Date | null; 
 type Value = ValuePiece | [ValuePiece, ValuePiece]; // Representa uma única data ou um intervalo de datas.
 
-// Define a interface para o tipo de dados de presença
 interface Presenca {
   name: string;
   matricula: number;
   timestamp: string;
 }
 
-const Presencas: React.FC = () => {
-  const [presencas, setPresencas] = useState<Presenca[]>([]); // Estado para armazenar a lista de presenças
-  const [selectedDate, setSelectedDate] = useState<Value>(new Date()); // Estado para armazenar a data selecionada
+const Presencas: React.FC = () => { 
+  const [presencas, setPresencas] = useState<Presenca[]>([]); 
+  const [selectedDate, setSelectedDate] = useState<Value>(new Date()); 
 
   useEffect(() => {
     const fetchPresencas = async () => {
@@ -44,7 +43,7 @@ const Presencas: React.FC = () => {
 
         return {
           name: data.name,
-          matricula: Number(data.matricula), // Converte a matrícula para número
+          matricula: Number(data.matricula), 
           timestamp: formattedTimestamp,
         } as Presenca;
       });
